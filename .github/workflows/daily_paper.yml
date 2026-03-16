@@ -1,0 +1,47 @@
+name: 📄 每日论文精读
+
+on:
+  schedule:
+    # 每天北京时间早上 8:00 运行 (UTC 0:00)
+    - cron: '0 0 * * *'
+  workflow_dispatch:  # 支持手动触发
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  generate-daily-paper:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate daily paper analysis
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          API_MODEL: ${{ secrets.API_MODEL }}
+        run: python scripts/generate_daily.py
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "📄 每日论文精读 - ${{ github.run_id }}"
+          title: "📄 每日论文精读 - $(date +'%Y-%m-%d')"
+          body: |
+            ## 🤖 AI 自动生成的论文分析
+
+            请 review 并补充你的个人见解（搜索 `TODO` 标记），然后 merge。
+
+            Merge 后会自动部署到 GitHub Pages。
+          branch: daily-paper/${{ github.run_id }}
+          labels: paper-reading

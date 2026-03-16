@@ -1,0 +1,303 @@
+[
+  {
+    "id": "fast25-spandb",
+    "title": "SpanDB: A Fast, Cost-Effective LSM-tree Based KV Store on Hybrid Storage",
+    "conference": "FAST'25",
+    "year": 2025,
+    "authors": "",
+    "pdf_url": "",
+    "abstract": "",
+    "tags": [
+      "key-value store",
+      "LSM-tree",
+      "hybrid storage"
+    ],
+    "picked": false
+  },
+  {
+    "id": "fast25-baleen",
+    "title": "Baleen: ML Admission & Prefetching for Flash Caches",
+    "conference": "FAST'25",
+    "year": 2025,
+    "authors": "",
+    "pdf_url": "",
+    "abstract": "",
+    "tags": [
+      "caching",
+      "flash",
+      "machine learning"
+    ],
+    "picked": false
+  },
+  {
+    "id": "fast24-bpftree",
+    "title": "BPF-oF: Storage Function Pushdown for BPF-enabled Flash",
+    "conference": "FAST'24",
+    "year": 2024,
+    "authors": "",
+    "pdf_url": "",
+    "abstract": "",
+    "tags": [
+      "BPF",
+      "flash storage",
+      "computational storage"
+    ],
+    "picked": true,
+    "picked_date": "2026-03-16"
+  },
+  {
+    "id": "fast24-tectonic",
+    "title": "Tectonic-Shift: A Composite Storage Fabric for Large-Scale ML Training",
+    "conference": "FAST'24",
+    "year": 2024,
+    "authors": "",
+    "pdf_url": "",
+    "abstract": "",
+    "tags": [
+      "distributed storage",
+      "ML training",
+      "large-scale"
+    ],
+    "picked": false
+  },
+  {
+    "id": "fast24-disaggregated-memory",
+    "title": "SMART: A High-Performance Adaptive Radix Tree for Disaggregated Memory",
+    "conference": "FAST'24",
+    "year": 2024,
+    "authors": "",
+    "pdf_url": "",
+    "abstract": "",
+    "tags": [
+      "disaggregated memory",
+      "index structure",
+      "RDMA"
+    ],
+    "picked": false
+  },
+  {
+    "id": "fast24-cfs",
+    "title": "CFS: Scaling Metadata Service for Distributed File System via Pruned Scope of Critical Sections",
+    "conference": "FAST'24",
+    "year": 2024,
+    "authors": "",
+    "pdf_url": "",
+    "abstract": "",
+    "tags": [
+      "distributed file system",
+      "metadata",
+      "scalability"
+    ],
+    "picked": false
+  },
+  {
+    "id": "fast24-fifo-queues",
+    "title": "FIFO Queues are All You Need for Cache Eviction",
+    "conference": "FAST'24",
+    "year": 2024,
+    "authors": "",
+    "pdf_url": "",
+    "abstract": "",
+    "tags": [
+      "caching",
+      "eviction policy",
+      "FIFO"
+    ],
+    "picked": false
+  },
+  {
+    "id": "fast24-odinfs",
+    "title": "OdinFS: Scaling PM Performance with Opportunistic Delegation",
+    "conference": "FAST'24",
+    "year": 2024,
+    "authors": "",
+    "pdf_url": "",
+    "abstract": "",
+    "tags": [
+      "persistent memory",
+      "file system",
+      "scalability"
+    ],
+    "picked": false
+  },
+  {
+    "id": "fast23-raidshield",
+    "title": "RAIDShield: Characterizing, Monitoring, and Proactively Protecting Against Disk Failures",
+    "conference": "FAST'23",
+    "year": 2023,
+    "authors": "",
+    "pdf_url": "",
+    "abstract": "",
+    "tags": [
+      "RAID",
+      "disk failure",
+      "reliability"
+    ],
+    "picked": false
+  },
+  {
+    "id": "fast23-cxl-study",
+    "title": "Overcoming the Memory Wall with CXL-Enabled SSDs",
+    "conference": "FAST'23",
+    "year": 2023,
+    "authors": "",
+    "pdf_url": "",
+    "abstract": "",
+    "tags": [
+      "CXL",
+      "SSD",
+      "memory wall"
+    ],
+    "picked": false
+  },
+  {
+    "id": "fast23-tesseract",
+    "title": "Tesseract: File System-Level Replication on Zoned Namespaces SSDs",
+    "conference": "FAST'23",
+    "year": 2023,
+    "authors": "",
+    "pdf_url": "",
+    "abstract": "",
+    "tags": [
+      "ZNS SSD",
+      "replication",
+      "file system"
+    ],
+    "picked": false
+  },
+  {
+    "id": "fast23-polardb",
+    "title": "POLARDB Meets Computational Storage: Efficiently Support Analytical Workloads in Cloud-Native Relational Database",
+    "conference": "FAST'23",
+    "year": 2023,
+    "authors": "",
+    "pdf_url": "",
+    "abstract": "",
+    "tags": [
+      "cloud-native database",
+      "computational storage",
+      "OLAP"
+    ],
+    "picked": false
+  },
+  {
+    "id": "fast23-gl-cache",
+    "title": "GL-Cache: Group-level Learning for Efficient and High-Performance Caching",
+    "conference": "FAST'23",
+    "year": 2023,
+    "authors": "",
+    "pdf_url": "",
+    "abstract": "",
+    "tags": [
+      "caching",
+      "group-level learning",
+      "eviction"
+    ],
+    "picked": false
+  },
+  {
+    "id": "fast23-calcspar",
+    "title": "CalcSpar: A Contract-Aware LSM Store for Cloud Storage with Low Latency Spikes",
+    "conference": "FAST'23",
+    "year": 2023,
+    "authors": "",
+    "pdf_url": "",
+    "abstract": "",
+    "tags": [
+      "LSM-tree",
+      "cloud storage",
+      "tail latency"
+    ],
+    "picked": false
+  },
+  {
+    "id": "fast24-ztier",
+    "title": "zTier: A Tiered Storage Architecture for Zoned Namespaces",
+    "conference": "FAST'24",
+    "year": 2024,
+    "authors": "",
+    "pdf_url": "",
+    "abstract": "",
+    "tags": [
+      "ZNS SSD",
+      "tiered storage",
+      "storage architecture"
+    ],
+    "picked": false
+  },
+  {
+    "id": "fast24-compaction",
+    "title": "Compaction-Aware Zone Allocation for LSM based Key-Value Store on ZNS SSDs",
+    "conference": "FAST'24",
+    "year": 2024,
+    "authors": "",
+    "pdf_url": "",
+    "abstract": "",
+    "tags": [
+      "ZNS SSD",
+      "LSM-tree",
+      "compaction"
+    ],
+    "picked": false
+  },
+  {
+    "id": "fast23-kvrangedb",
+    "title": "Removing Double-Logging with Passive Data Persistence in LSM-tree Based Relational Databases",
+    "conference": "FAST'23",
+    "year": 2023,
+    "authors": "",
+    "pdf_url": "",
+    "abstract": "",
+    "tags": [
+      "LSM-tree",
+      "database",
+      "logging"
+    ],
+    "picked": false
+  },
+  {
+    "id": "fast24-disagg-fs",
+    "title": "InfiniFS: An Efficient Metadata Service for Large-Scale Distributed Filesystems",
+    "conference": "FAST'24",
+    "year": 2024,
+    "authors": "",
+    "pdf_url": "",
+    "abstract": "",
+    "tags": [
+      "distributed file system",
+      "metadata",
+      "large-scale"
+    ],
+    "picked": false
+  },
+  {
+    "id": "fast23-cachelib",
+    "title": "CacheLib: Hybrid Caching Engine for Web-Scale Services",
+    "conference": "FAST'23",
+    "year": 2023,
+    "authors": "",
+    "pdf_url": "",
+    "abstract": "",
+    "tags": [
+      "caching",
+      "hybrid",
+      "web-scale"
+    ],
+    "picked": false
+  },
+  {
+    "id": "fast24-ssd-reliability",
+    "title": "Design Considerations for Persistent Memory in Modern SSD Controllers",
+    "conference": "FAST'24",
+    "year": 2024,
+    "authors": "",
+    "pdf_url": "",
+    "abstract": "",
+    "tags": [
+      "SSD",
+      "persistent memory",
+      "controller design"
+    ],
+    "picked": false
+  }
+]

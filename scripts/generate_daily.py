@@ -1,0 +1,210 @@
+#!/usr/bin/env python3
+"""
+每日论文挑选与AI分析脚本
+从 FAST 会议论文列表中挑选一篇，调用 GitHub Models API 生成总结与分析，
+输出 Markdown 格式的博客草稿。
+
+GitHub Copilot 订阅用户可直接使用 GitHub Models API。
+"""
+from __future__ import annotations
+
+import json
+import os
+import random
+import sys
+from datetime import datetime
+from pathlib import Path
+
+from openai import OpenAI
+
+# 项目根目录
+ROOT = Path(__file__).resolve().parent.parent
+PAPERS_FILE = ROOT / "data" / "fast_papers.json"
+POSTS_DIR = ROOT / "docs" / "posts"
+
+SYSTEM_PROMPT = """你是一位资深的分布式存储系统专家，熟悉 HDFS、CubeFS、Ceph 等主流分布式存储系统。
+你的任务是对存储领域的学术论文进行深度分析，面向有一定存储系统经验的工程师。
+
+请用中文输出，分析要专业、深入、有见地。对于关键的技术术语保留英文。"""
+
+ANALYSIS_PROMPT_TEMPLATE = """请对以下 FAST 会议论文进行深度分析：
+
+论文标题: {title}
+会议: {conference}
+标签: {tags}
+{abstract_section}
+
+请按以下结构输出分析（Markdown 格式）：
+
+## 论文基本信息
+
+简要介绍论文的 conference、年份、研究方向。
+
+## 研究背景与动机
+
+- 这篇论文要解决什么问题？
+- 为什么这个问题重要？
+- 现有方案有什么不足？
+
+## 架构设计图
+
+用 Mermaid 语法画出论文的核心架构图（flowchart 或 graph），要求：
+- 展示系统的主要组件和数据流
+- 用中文标注组件名，关键英文术语保留
+- 如有必要，再画一个流程图展示关键操作流程
+
+## 核心设计与技术贡献
+
+- 论文提出的核心方法/架构是什么？
+- 关键的设计决策有哪些？
+- 创新点在哪里？
+
+## 实验评估亮点
+
+- 论文的实验设计思路
+- 关键的性能数据和结论
+
+## 与现有系统的关系
+
+- 与 HDFS、CubeFS 等主流分布式存储系统有什么关联？
+- 这些思路是否可以借鉴到生产系统中？
+
+## 个人思考启发
+
+- 这篇论文最值得学习的点是什么？
+- 有哪些潜在的局限性或可改进之处？
+- 对存储系统从业者有什么启示？
+"""
+
+
+def load_papers() -> list[dict]:
+    with open(PAPERS_FILE, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def save_papers(papers: list[dict]):
+    with open(PAPERS_FILE, "w", encoding="utf-8") as f:
+        json.dump(papers, f, ensure_ascii=False, indent=2)
+
+
+def pick_paper(papers: list[dict]) -> dict | None:
+    """从未选过的论文中随机挑一篇"""
+    unpicked = [p for p in papers if not p.get("picked", False)]
+    if not unpicked:
+        # 全部选过了，重置
+        for p in papers:
+            p["picked"] = False
+        unpicked = papers
+    return random.choice(unpicked) if unpicked else None
+
+
+def generate_analysis(paper: dict) -> str:
+    """调用 GitHub Models API 生成论文分析"""
+    api_key = os.environ.get("GITHUB_TOKEN")
+    if not api_key:
+        print("错误: 请设置 GITHUB_TOKEN 环境变量", file=sys.stderr)
+        print("获取方式: https://github.com/settings/tokens → Generate new token (classic)", file=sys.stderr)
+        sys.exit(1)
+
+    base_url = os.environ.get("API_BASE_URL", "https://models.github.ai/inference")
+    model = os.environ.get("API_MODEL", "openai/gpt-4o")
+
+    client = OpenAI(api_key=api_key, base_url=base_url)
+
+    abstract_section = ""
+    if paper.get("abstract"):
+        abstract_section = f"摘要: {paper['abstract']}"
+
+    prompt = ANALYSIS_PROMPT_TEMPLATE.format(
+        title=paper["title"],
+        conference=paper["conference"],
+        tags=", ".join(paper.get("tags", [])),
+        abstract_section=abstract_section,
+    )
+
+    response = client.chat.completions.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": prompt},
+        ],
+        temperature=0.7,
+        max_tokens=4000,
+    )
+
+    return response.choices[0].message.content
+
+
+def generate_post(paper: dict, analysis: str) -> str:
+    """生成博客 Markdown 文件内容"""
+    today = datetime.now().strftime("%Y-%m-%d")
+    tags_str = "\n".join(f"  - {tag}" for tag in paper.get("tags", []))
+
+    post = f"""---
+date: {today}
+categories:
+  - 论文精读
+  - {paper['conference']}
+tags:
+{tags_str}
+---
+
+# 【论文精读】{paper['title']}
+
+> **会议**: {paper['conference']} | **日期**: {today}
+> **标签**: {', '.join(paper.get('tags', []))}
+
+{analysis}
+"""
+    return post
+
+
+def main():
+    papers = load_papers()
+
+    # 支持通过命令行参数指定论文 ID
+    if len(sys.argv) > 1:
+        paper_id = sys.argv[1]
+        paper = next((p for p in papers if p["id"] == paper_id), None)
+        if not paper:
+            print(f"错误: 找不到论文 ID '{paper_id}'", file=sys.stderr)
+            sys.exit(1)
+    else:
+        paper = pick_paper(papers)
+
+    if not paper:
+        print("没有可选的论文了！", file=sys.stderr)
+        sys.exit(1)
+
+    print(f"📄 今日论文: {paper['title']}")
+    print(f"📂 会议: {paper['conference']}")
+    print(f"🏷️  标签: {', '.join(paper.get('tags', []))}")
+    print()
+
+    print("🤖 正在调用 AI 生成分析...")
+    analysis = generate_analysis(paper)
+    print("✅ 分析生成完成！")
+
+    # 生成文件名
+    today = datetime.now().strftime("%Y-%m-%d")
+    safe_title = paper["id"].replace("/", "-")
+    filename = f"{today}-{safe_title}.md"
+
+    POSTS_DIR.mkdir(parents=True, exist_ok=True)
+    post_path = POSTS_DIR / filename
+    post_content = generate_post(paper, analysis)
+
+    with open(post_path, "w", encoding="utf-8") as f:
+        f.write(post_content)
+
+    # 标记已选
+    paper["picked"] = True
+    paper["picked_date"] = today
+    save_papers(papers)
+
+    print(f"📝 博客草稿已生成: {post_path}")
+    return str(post_path)
+
+
+if __name__ == "__main__":
+    main()
