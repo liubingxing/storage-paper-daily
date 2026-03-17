@@ -34,14 +34,13 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_PAT }}
           commit-message: "📄 每日论文精读 - ${{ github.run_id }}"
-          title: "📄 每日论文精读 - $(date +'%Y-%m-%d')"
+          title: "📄 每日论文精读 - ${{ github.event.repository.updated_at }}"
           body: |
             ## 🤖 AI 自动生成的论文分析
 
-            请 review 并补充你的个人见解（搜索 `TODO` 标记），然后 merge。
-
+            请 review 论文分析内容，然后 merge。
             Merge 后会自动部署到 GitHub Pages。
           branch: daily-paper/${{ github.run_id }}
           labels: paper-reading
