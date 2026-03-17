@@ -106,8 +106,8 @@ def generate_analysis(paper: dict) -> str:
         print("获取方式: https://github.com/settings/tokens → Generate new token (classic)", file=sys.stderr)
         sys.exit(1)
 
-    base_url = os.environ.get("API_BASE_URL", "https://models.inference.ai.azure.com")
-    model = os.environ.get("API_MODEL", "gpt-4o")
+    base_url = os.environ.get("API_BASE_URL") or "https://models.inference.ai.azure.com"
+    model = os.environ.get("API_MODEL") or "gpt-4o"
 
     client = OpenAI(api_key=api_key, base_url=base_url)
 
