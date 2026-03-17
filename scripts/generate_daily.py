@@ -202,6 +202,13 @@ def main():
     paper["picked_date"] = today
     save_papers(papers)
 
+    # 输出论文信息供 CI 使用
+    metadata_path = ROOT / "paper_metadata.txt"
+    with open(metadata_path, "w", encoding="utf-8") as f:
+        f.write(f"PAPER_TITLE={paper['title']}\n")
+        f.write(f"PAPER_CONF={paper['conference']}\n")
+        f.write(f"PAPER_TAGS={', '.join(paper.get('tags', []))}\n")
+
     print(f"📝 博客草稿已生成: {post_path}")
     return str(post_path)
 

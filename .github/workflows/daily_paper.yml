@@ -31,14 +31,32 @@ jobs:
           API_MODEL: ${{ secrets.API_MODEL }}
         run: python scripts/generate_daily.py
 
+      - name: Read paper metadata
+        id: meta
+        run: |
+          if [ -f paper_metadata.txt ]; then
+            PAPER_TITLE=$(grep '^PAPER_TITLE=' paper_metadata.txt | cut -d= -f2-)
+            PAPER_CONF=$(grep '^PAPER_CONF=' paper_metadata.txt | cut -d= -f2-)
+            PAPER_TAGS=$(grep '^PAPER_TAGS=' paper_metadata.txt | cut -d= -f2-)
+            echo "title=$PAPER_TITLE" >> $GITHUB_OUTPUT
+            echo "conf=$PAPER_CONF" >> $GITHUB_OUTPUT
+            echo "tags=$PAPER_TAGS" >> $GITHUB_OUTPUT
+            rm paper_metadata.txt
+          fi
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GH_PAT }}
-          commit-message: "📄 每日论文精读 - ${{ github.run_id }}"
-          title: "📄 每日论文精读 - ${{ github.event.repository.updated_at }}"
+          commit-message: "📄 ${{ steps.meta.outputs.conf }} - ${{ steps.meta.outputs.title }}"
+          title: "📄 [${{ steps.meta.outputs.conf }}] ${{ steps.meta.outputs.title }}"
           body: |
-            ## 🤖 AI 自动生成的论文分析
+            ## 📄 ${{ steps.meta.outputs.title }}
+
+            - **会议**: ${{ steps.meta.outputs.conf }}
+            - **标签**: ${{ steps.meta.outputs.tags }}
+
+            ---
 
             请 review 论文分析内容，然后 merge。
             Merge 后会自动部署到 GitHub Pages。
