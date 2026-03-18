@@ -33,6 +33,10 @@ plugins:
   - blog:
       blog_dir: .
       post_dir: "{blog}/posts"
+      post_url_format: "{slug}"
+      archive: true
+      categories: true
+      pagination_per_page: 5
 
 markdown_extensions:
   - admonition
