@@ -58,7 +58,8 @@
       "ML training",
       "large-scale"
     ],
-    "picked": false
+    "picked": true,
+    "picked_date": "2026-03-24"
   },
   {
     "id": "fast24-disaggregated-memory",
