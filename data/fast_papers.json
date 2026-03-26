@@ -254,7 +254,8 @@
       "database",
       "logging"
     ],
-    "picked": false
+    "picked": true,
+    "picked_date": "2026-03-26"
   },
   {
     "id": "fast24-disagg-fs",
