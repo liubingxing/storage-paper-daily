@@ -133,7 +133,8 @@
       "disk failure",
       "reliability"
     ],
-    "picked": false
+    "picked": true,
+    "picked_date": "2026-03-27"
   },
   {
     "id": "fast23-cxl-study",
