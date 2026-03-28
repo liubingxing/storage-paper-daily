@@ -269,7 +269,8 @@
       "metadata",
       "large-scale"
     ],
-    "picked": false
+    "picked": true,
+    "picked_date": "2026-03-28"
   },
   {
     "id": "fast23-cachelib",
